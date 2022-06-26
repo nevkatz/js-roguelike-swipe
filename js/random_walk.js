@@ -11,17 +11,12 @@ function randomWalk() {
    for (var row = 0; row < ROWS; row++) {
       // create row
       game.map.push([]);
-
-
       for (var col = 0; col < COLS; col++) {
-         // create wall
          game.map[row].push(WALL_CODE);
       }
    }
    // set up total number of tiles used
    // and the total number of penalties made
-
-   
    let pos = { 
       x:COLS/2,
       y:ROWS/2

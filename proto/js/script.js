@@ -16,8 +16,6 @@ const WALL_CODE = 0;
 const FLOOR_CODE = 1;
 const PLAYER_CODE = 2;
 
-const POINTS_PER_LEVEL = 100;
-
 // the visible area
 const VISIBILITY = 3;
 
@@ -28,13 +26,6 @@ const TILE_COLORS = [
     'white',
     // player
     'blue',
-    // enemy
-    'red',
-    // health drop
-    'green',
-    // weapon
-    'orange',
-
     // relic
     '#a117f2'
 ];
@@ -217,18 +208,7 @@ function updatePlayerPosition(oldX, oldY, newX, newY) {
         y: newY
     };
 }
-/**
- * Code we will change
- * @TODO: Add logic for scrolling.
- * 
- *        In Phase 1, scroll all the time and keep the player
- *        in the center.
- * 
- *        In Phase 2, make it conditional upon how far away
- *        the player is from the center.
- * 
- *        In Phase 3, check visible screen rather than entire map.
- */ 
+
 function checkDirection(e) {
 
     let {x, y} = player.coords;
