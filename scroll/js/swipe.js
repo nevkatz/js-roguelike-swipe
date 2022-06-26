@@ -2,6 +2,7 @@
  * Swipe Logic
  */
 function swipeStart(e) {
+    e.preventDefault();
   //  console.log(e);
      let obj = e.touches[0];
 
@@ -12,6 +13,7 @@ function swipeStart(e) {
 
 }
 function swipeMove(e) {
+        e.preventDefault();
 
         let obj = e.touches[0];
 
@@ -31,7 +33,7 @@ function swipeMove(e) {
            y:clientY - game.touchCoords.y
         };
 
-        let limit = 10;
+        let limit = 20;
         if (Math.abs(diff.x) > limit) {
           
             let x = diff.x/Math.abs(diff.x);
