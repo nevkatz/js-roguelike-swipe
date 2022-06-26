@@ -461,9 +461,6 @@ function checkDirection(e) {
         checkEnemy(x, y);
 
     } else if (game.map[y][x] != WALL_CODE) {
-
-        
-
         movePlayer(x, y, offset);
     }
 }
