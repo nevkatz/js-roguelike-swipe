@@ -21,10 +21,15 @@ function swipeMove(e) {
 
         let {clientX, clientY} = obj;
 
-        let diff = {};
+        let offset = {
+            x:0,
+            y:0
+        };
 
-        diff.x = clientX - game.touchCoords.x;
-        diff.y = clientY - game.touchCoords.y;
+        let diff = {
+           x:clientX - game.touchCoords.x,
+           y:clientY - game.touchCoords.y
+        };
 
         let limit = 10;
         if (Math.abs(diff.x) > limit) {
@@ -36,6 +41,8 @@ function swipeMove(e) {
             if (!player.blockedX(diff)) {
                 newX = player.coords.x + x;
             }
+            let direction = (diff.x > 0) ? 'right' : 'left';
+            offset = checkOffset(direction, newX, newY, offset);
         }
         if (Math.abs(diff.y) > limit) {
             let y = diff.y/Math.abs(diff.y);
@@ -43,21 +50,44 @@ function swipeMove(e) {
             if (!player.blockedY(diff)) {
                 newY = player.coords.y + y;
             }
+            let direction = (diff.y > 0) ? 'down' : 'up';
+            offset = checkOffset(direction, newX, newY, offset);
 
         }
-    
-        if (game.map[newY][newX] != WALL_CODE) {
-           updatePlayerPosition(oldX, oldY, newX, newY);
+        const freeTile = (x,y) => {
+            let tileCode = game.map[y][x];
+            let solidTiles = [WALL_CODE, ENEMY_CODE];
+            return !solidTiles.includes(tileCode);
         }
-        else if (game.map[newY][oldX] != WALL_CODE) {
-            updatePlayerPosition(oldX, oldY, oldX, newY); 
+
+        /**
+         * @TODO: Move to other code. 
+         */ 
+        if (offset.x != 0 || offset.y != 0) {
+            console.log('offset:');
+            console.log(offset);
         }
-        else if (game.map[oldY][newX] != WALL_CODE) {
-            updatePlayerPosition(oldX, oldY, newX, oldY); 
+
+        if (freeTile(newX,newY)) {
+            movePlayer(newX, newY, offset);
+        }
+
+        else if (newY != oldY && freeTile(oldX,newY)) {
+   
+            movePlayer(oldX, newY, offset); 
+        }
+        else if (newX != oldX && freeTile(newX,oldY)) {
+
+            movePlayer(newX, oldY, offset); 
+        }
+        else if (game.map[newY][newX] == ENEMY_CODE) {
+            console.log('check enemy.');
+          checkEnemy(newX, newY);   
         }
         else {
             console.log('nothing to do.');
         }
-        drawMap(0, 0, COLS, ROWS);
+
+     
 
 }

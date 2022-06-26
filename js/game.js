@@ -24,6 +24,11 @@ class Game {
       this.canvas = null;
       this.context = null;
 
+      this.touchCoords = {
+         x:0,
+         y:0
+      }
+
       this.offset = {
          x:0,
          y:0

@@ -71,27 +71,6 @@ const TILE_COLORS = [
  * Classes 
  */
 
-/**
- * Creates a new player. 
- * @class
- * 
- * @property {number} level - starts at one and progresses
- * @property {number} health - keep this above zero
- * @property {string} weapon - ties to an object with a damage rating
- * @property {object} coords - location on the grid
- * @property {number} xp - experience points
- * @property {relics} relics - relics collected
- */
-class Player {
-   constructor(level, health, weapon, coords, xp, relics) {
-      this.level = level;
-      this.health = health;
-      this.weapon = weapon;
-      this.coords = coords;
-      this.relics = relics;
-      this.xp = xp;
-   }
-}
 
 
 /**
@@ -169,6 +148,8 @@ function init() {
    game.context = game.canvas.getContext("2d");
    startGame();
    document.addEventListener('keydown', checkDirection);
+   game.canvas.addEventListener('touchstart', swipeStart);
+   game.canvas.addEventListener('touchmove', swipeMove);
 
 }
 init();
@@ -277,7 +258,6 @@ function updateStats() {
  * 
  */
 function drawMap(startX, startY, endX, endY) {
-   console.log('drawing map');
    // loop through all cells of the map
    for (var row = startY; row < endY; row++) {
 
@@ -407,49 +387,71 @@ function updatePlayerPosition(oldX, oldY, newX, newY) {
  */ 
 // key down events
 
+
+function checkOffset(direction, x, y, offset) {
+
+   let absPos = {
+        x: x + game.offset.x,
+        y: y + game.offset.y
+   };
+   
+   switch (direction) {
+      case 'left':
+      const leftBounds = (WIDTH - CENTER_BOX.x) / 2;
+
+      if (absPos.x <= leftBounds) {
+         offset.x = 1;
+      }
+      break;
+
+      case 'up':
+      const upperBounds = (HEIGHT - CENTER_BOX.y) / 2;
+            if (absPos.y <= upperBounds) {
+                offset.y = 1;
+            }
+      break;
+
+      case 'right':
+      const rightBounds = (WIDTH + CENTER_BOX.x) / 2;
+      if (absPos.x >= rightBounds) {
+                offset.x = -1;
+      }
+      break;
+      case 'down':
+      const lowerBounds = (HEIGHT + CENTER_BOX.y) / 2;
+            if (absPos.y >= lowerBounds) {
+                offset.y = -1;
+      }
+      break;
+   }
+   return offset;
+}
 function checkDirection(e) {
     // prevent the default action (scroll / move caret)
     e.preventDefault();
 
     let {x,y} = player.coords;
-
     let offset = {
-        x: 0,
-        y: 0
+      x:0,
+      y:0
     };
-    let absPos = {
-        x: x + game.offset.x,
-        y: y + game.offset.y
-    };
+
     switch (e.which) {
         case 37: // left
             x--;
-            const leftBounds = (WIDTH - CENTER_BOX.x) / 2;
-
-            if (absPos.x <= leftBounds) {
-                offset.x = 1;
-            }
+            offset = checkOffset('left', x, y, offset);
             break;
         case 38: // up
             y--;
-            const upperBounds = (HEIGHT - CENTER_BOX.y) / 2;
-            if (absPos.y <= upperBounds) {
-                offset.y = 1;
-            }
+            offset = checkOffset('up',x,y, offset);
             break;
         case 39: // right
             x++;
-            const rightBounds = (WIDTH + CENTER_BOX.x) / 2;
-            if (absPos.x >= rightBounds) {
-                offset.x = -1;
-            }
+            offset = checkOffset('right',x,y, offset);
             break;
         case 40: // down
             y++;
-            const lowerBounds = (HEIGHT + CENTER_BOX.y) / 2;
-            if (absPos.y >= lowerBounds) {
-                offset.y = -1;
-            }
+            offset = checkOffset('down',x,y, offset);
             break;
         default:
             return; // exit this handler for other keys
@@ -460,13 +462,15 @@ function checkDirection(e) {
 
     } else if (game.map[y][x] != WALL_CODE) {
 
-        game.offset.y += offset.y;
-        game.offset.x += offset.x;
+        
 
         movePlayer(x, y, offset);
     }
 }
 function movePlayer(x, y, offset) {
+      game.offset.y += offset.y;
+      game.offset.x += offset.x;
+
     // if next spot is potion
     if (game.map[y][x] == POTION_CODE) {
 
@@ -498,6 +502,7 @@ function movePlayer(x, y, offset) {
     updateStats();
 
     if (offset.x != 0 || offset.y != 0) {
+      console.log('offset found');
         drawMap(0, 0, COLS, ROWS);
         
     } else {
