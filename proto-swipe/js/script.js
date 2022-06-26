@@ -49,6 +49,36 @@ class Player {
         this.coords = coords;
     }
 }
+Player.prototype.blockedY = function(diff) {
+
+        let topBounds = 0;
+        let bottomBounds = ROWS;
+        let atTop = diff.y < 0 && this.coords.y <= topBounds;
+        let atBot = diff.y > 0 && this.coords.y >= bottomBounds;
+
+        if (atTop) {
+            console.log('at top...');
+            this.coords.y = topBounds;
+        } else if (atBot) {
+            this.coords.y = bottomBounds;
+        }
+
+        return atTop || atBot;
+};
+Player.prototype.blockedX = function(diff) {
+
+        let rightBounds = COLS;
+        let leftBounds = 0;
+        let atRight = diff.x > 0 && this.coords.x + TILE_DIM / 2 >= game.canvas.width;
+        let atLeft = diff.x < 0 && this.coords.x - TILE_DIM / 2 <= 0;
+
+        if (atRight) {
+            player.coords.x = rightBounds;
+        } else if (atLeft) {
+            player.coords.x = leftBounds;
+        }
+        return atRight || atLeft;
+}
 
 
 function createDOM() {
@@ -60,7 +90,6 @@ function createDOM() {
     canvas.id = 'grid';
     canvas.height = ROWS * TILE_DIM;
     canvas.width = COLS * TILE_DIM;
-
     container.appendChild(canvas);
 }
 /**
@@ -76,6 +105,8 @@ function init() {
     game.context = game.canvas.getContext("2d");
     startGame();
     document.addEventListener('keydown', checkDirection);
+    game.canvas.addEventListener('touchstart', swipeStart);
+    game.canvas.addEventListener('touchmove', swipeMove);
 }
 init();
 /**
