@@ -20,6 +20,7 @@ function swipeEnd(e) {
         y:0
     };
     window.clearInterval(timer);
+    console.log('CLEAR');
     timer = null;
 }
 function swipeMove(e) {
@@ -68,14 +69,15 @@ function swipeMove(e) {
             }
         }
         if (newY != oldY || newX != oldX) {
-               let {x, y} = player.velocity;
-              console.log(`before coast: ${x},${y}`);
+            let {x, y} = player.velocity;
+            console.log(`before coast: ${x},${y}`);
             checkPlayer(oldX, oldY, newX, newY, offset);
 
             if (!timer) {
+                let delay = 100;
               timer = window.setInterval(function() {
                 coast();
-              }, 32);
+              }, delay);
             }
         }
         else {
@@ -94,8 +96,6 @@ function coast() {
     let {x:oldX, y:oldY} = player.coords;
 
     let {x:newX, y:newY} = player.coords;
-
-  
    
     if (x && !player.edgeX(x)) {
        newX = player.coords.x + x;
