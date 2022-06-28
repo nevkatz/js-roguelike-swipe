@@ -12,6 +12,7 @@ class Game {
       this.map = [];
       this.canvas = null;
       this.context = null;
+      this.timer = null;
       this.touchCoords = {
          x:0,
          y:0
@@ -21,6 +22,8 @@ class Game {
 }
 Game.prototype.reset = function() {
    this.map = [];
+   window.clearInterval(timer);
+   timer = null;
 }
 
 Game.prototype.resetMap = function() {

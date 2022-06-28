@@ -1,7 +1,7 @@
 /**
  * Swipe Logic
  */
-var timer = null;
+
 function swipeStart(e) {
     e.preventDefault();
   
@@ -19,9 +19,9 @@ function swipeEnd(e) {
         x:0,
         y:0
     };
-    window.clearInterval(timer);
+    window.clearInterval(game.timer);
     console.log('CLEAR');
-    timer = null;
+    game.timer = null;
 }
 function swipeMove(e) {
         e.preventDefault();
@@ -45,8 +45,8 @@ function swipeMove(e) {
         let threshold = 20;
  
         if (Math.abs(diff.x) > threshold) {
-             window.clearInterval(timer);
-             timer = null;
+             window.clearInterval(game.timer);
+             game.timer = null;
           
             player.velocity.x = diff.x/Math.abs(diff.x);
             game.touchCoords.x = clientX;
@@ -58,8 +58,8 @@ function swipeMove(e) {
             }
         }
         if (Math.abs(diff.y) > threshold) {
-             window.clearInterval(timer);
-             timer = null;
+             window.clearInterval(game.timer);
+             game.timer = null;
             player.velocity.y = diff.y/Math.abs(diff.y);
             game.touchCoords.y = clientY;
             if (!player.edgeY(diff)) {
@@ -73,9 +73,9 @@ function swipeMove(e) {
             console.log(`before coast: ${x},${y}`);
             checkPlayer(oldX, oldY, newX, newY, offset);
 
-            if (!timer) {
-                let delay = 100;
-              timer = window.setInterval(function() {
+            if (!game.timer) {
+              let delay = 100;
+              game.timer = window.setInterval(function() {
                 coast();
               }, delay);
             }
