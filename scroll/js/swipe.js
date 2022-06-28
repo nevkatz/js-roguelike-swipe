@@ -33,14 +33,17 @@ function swipeMove(e) {
            y:clientY - game.touchCoords.y
         };
 
+        // encapsulate
+
         let limit = 20;
         if (Math.abs(diff.x) > limit) {
+            // encapsulate
           
             let x = diff.x/Math.abs(diff.x);
 
             game.touchCoords.x = clientX;
 
-            if (!player.blockedX(diff)) {
+            if (!player.edgeX(diff)) {
                 newX = player.coords.x + x;
             }
             let direction = (diff.x > 0) ? 'right' : 'left';
@@ -49,7 +52,7 @@ function swipeMove(e) {
         if (Math.abs(diff.y) > limit) {
             let y = diff.y/Math.abs(diff.y);
             game.touchCoords.y = clientY;
-            if (!player.blockedY(diff)) {
+            if (!player.edgeY(diff)) {
                 newY = player.coords.y + y;
             }
             let direction = (diff.y > 0) ? 'down' : 'up';
@@ -62,9 +65,7 @@ function swipeMove(e) {
             return !solidTiles.includes(tileCode);
         }
 
-        /**
-         * @TODO: Move to other code. 
-         */ 
+        // encapsulate 
         if (offset.x != 0 || offset.y != 0) {
             console.log('offset:');
             console.log(offset);

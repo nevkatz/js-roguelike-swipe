@@ -15,7 +15,7 @@ const CENTER_BOX = {
    x:12,
    y:12
 }
-console.log('tile dim: ' + TILE_DIM);
+
 /**
  * If abs player position.y is > 10 cols or < 70 rows 
  * If abs.player position.x is > 10 cols or < 50 rows
@@ -500,7 +500,7 @@ function movePlayer(x, y, offset) {
     updateStats();
 
     if (offset.x != 0 || offset.y != 0) {
-      console.log('offset found');
+   
         drawMap(0, 0, COLS, ROWS);
         
     } else {

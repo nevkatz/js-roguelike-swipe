@@ -20,11 +20,15 @@ class Player {
       this.health = health;
       this.weapon = weapon;
       this.coords = coords;
+      this.velocity = {
+         x:0,
+         y:0
+      };
       this.relics = relics;
       this.xp = xp;
    }
 }
-Player.prototype.blockedY = function(diff) {
+Player.prototype.edgeY = function(diff) {
 
         let topBounds = 0;
         let bottomBounds = ROWS;
@@ -40,12 +44,12 @@ Player.prototype.blockedY = function(diff) {
 
         return atTop || atBot;
 };
-Player.prototype.blockedX = function(diff) {
+Player.prototype.edgeX = function(diff) {
 
         let rightBounds = COLS;
         let leftBounds = 0;
-        let atRight = diff.x > 0 && this.coords.x + TILE_DIM / 2 >= game.canvas.width;
-        let atLeft = diff.x < 0 && this.coords.x - TILE_DIM / 2 <= 0;
+        let atRight = diff.x > 0 && this.coords.x >= rightBounds;
+        let atLeft = diff.x < 0 && this.coords.x <= leftBounds;
 
         if (atRight) {
             player.coords.x = rightBounds;

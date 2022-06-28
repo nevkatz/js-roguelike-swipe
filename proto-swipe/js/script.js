@@ -49,7 +49,7 @@ class Player {
         this.coords = coords;
     }
 }
-Player.prototype.blockedY = function(diff) {
+Player.prototype.edgeY = function(diff) {
 
         let topBounds = 0;
         let bottomBounds = ROWS;
@@ -65,7 +65,7 @@ Player.prototype.blockedY = function(diff) {
 
         return atTop || atBot;
 };
-Player.prototype.blockedX = function(diff) {
+Player.prototype.edgeX = function(diff) {
 
         let rightBounds = COLS;
         let leftBounds = 0;

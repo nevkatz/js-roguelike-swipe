@@ -33,14 +33,14 @@ function swipeMove(e) {
 
             game.touchCoords.x = clientX;
 
-            if (!player.blockedX(diff)) {
+            if (!player.edgeX(diff)) {
                 newX = player.coords.x + x;
             }
         }
         if (Math.abs(diff.y) > limit) {
             let y = diff.y/Math.abs(diff.y);
             game.touchCoords.y = clientY;
-            if (!player.blockedY(diff)) {
+            if (!player.edgeY(diff)) {
                 newY = player.coords.y + y;
             }
 
