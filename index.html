@@ -9,28 +9,13 @@
 <h1>Roguelike Tutorial: Adding Scrolling</h1>
 <div id="container">
   <p><a href="project/index.html">Project</a></p>
+  <p><a href="no-swipe/index.html">Just Keyboard</a></p>
+  <p><a href="proto-swipe/index.html">Swipe Controls</a></p>
+  <p><a href="scroll/index.html">Scrolling</a></p>
+  <p><a href="scroll-auto/index.html">Coasting</a></p>
+</div>
 </div>
 </body>
 <script>
-  let el = document.querySelector('#container');
-  let d = document.createDocumentFragment();
-
-  const addItem = (num, myDir, label) => {
-    console.log('add item...');
-    let p = document.createElement('p');
-    let a = document.createElement('a');
-
-    let dir = myDir || `phase-${num}-solution`;
-    a.href = `${dir}/index.html`;
-    a.innerHTML = label || `Phase ${num} Solution`;
-    p.appendChild(a);
-    d.appendChild(p);
-  };
-  let numPhases = 3;
-  for (var i = 1; i <= numPhases; ++i) {
-      addItem(i);
-  }
-  addItem(0, 'challenge-solution', 'Challenge Solution');
-  el.appendChild(d);
 </script>
 </html>

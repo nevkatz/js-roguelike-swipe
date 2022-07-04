@@ -13,10 +13,12 @@
  canvas {
      padding-left: 0;
      padding-right: 0;
-     margin-left: 0px;
-     margin-right: 0px;
+     margin-left: auto;
+     margin-right: auto;
      display: block;
-     width:  100%;
+}
+canvas.full-width {
+    width:  100%;
 }
 h1 {
   text-align: center;

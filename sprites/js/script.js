@@ -2,18 +2,25 @@
  *  Game Constants
  * 
  */ 
+// https://stackoverflow.com/questions/52059596/loading-an-image-on-web-browser-using-promise
 // dimensions
-const COLS = 80;
-const ROWS = 60;
+const COLS = 64;
+const ROWS = 32;
 
-const WIDTH = 25;
-const HEIGHT = 15;
+const IMG_SZ = 128;
 
-const TILE_DIM = 10;
+// make a deliberate width and height ratio.
+// 3:1 ratio between map and screen
+const WIDTH = 16;
+const HEIGHT = 8;
 
+// big tile size helps reduce fuzziness
+const TILE_DIM = 128;
+
+// make sure center box works with width and height
 const CENTER_BOX = {
-   x:12,
-   y:12
+   x:WIDTH/2,
+   y:HEIGHT/2
 }
 
 /**
@@ -148,6 +155,9 @@ function init() {
    game = new Game();
    game.canvas = document.getElementById("grid");
    game.context = game.canvas.getContext("2d");
+   game.context.mozImageSmoothingEnabled = false;
+   game.context.imageSmoothingEnabled = false;
+   game.context.webkitImageSmoothingEnabled = false;
    startGame();
    document.addEventListener('keydown', checkDirection);
    game.canvas.addEventListener('touchend', swipeEnd);
@@ -169,12 +179,16 @@ function startGame() {
 
   if (ready) {
      generatePlayer();
-     generateItems(STARTING_WEAPONS_AMOUNT, WEAPON_CODE);
-     generateItems(STARTING_POTIONS_AMOUNT, POTION_CODE);
-     generateEnemies(TOTAL_ENEMIES);
-     updateStats();
-     centerPlayer();
-     drawMap(0, 0, COLS, ROWS);
+
+     player.image.onload = function() {
+         generateItems(STARTING_WEAPONS_AMOUNT, WEAPON_CODE);
+         generateItems(STARTING_POTIONS_AMOUNT, POTION_CODE);
+         generateEnemies(TOTAL_ENEMIES);
+         updateStats();
+         centerPlayer();
+         drawMap(0, 0, COLS, ROWS);
+     }
+  
 
   }
 }
@@ -272,7 +286,14 @@ function drawMap(startX, startY, endX, endY) {
 
          color = TILE_COLORS[c_idx];
         
-         drawObject(col, row, color);
+         if (c_idx == PLAYER_CODE) {
+            console.log('draw player');
+            drawPlayer(col,row);
+         }
+         else {
+            console.log('draw object...');
+            drawObject(col, row, color);
+        }
 
       } // end loop
    }
@@ -316,8 +337,12 @@ function generatePlayer() {
       y: ROWS / 2
    };
 
+   let src = '../images/avatars/avatar-a.png';
    // level, health, weapon, coords, xp
-   player = new Player(1, 100, WEAPONS[0], coords, 30, 0);
+   player = new Player(1, 100, WEAPONS[0], coords, 30, 0, src);
+
+ //  console.log('w: ' + player.image.width);
+ //   game.context.drawImage(player.image, 0, 0,320,320);
 
    addObjToMap(player.coords, PLAYER_CODE);
 }
@@ -344,6 +369,18 @@ function drawObject(x, y, color) {
    game.context.rect(x * TILE_DIM, y * TILE_DIM, TILE_DIM, TILE_DIM);
    game.context.fillStyle = color;
    game.context.fill();
+}
+
+function drawPlayer(x, y) {
+
+   let color = TILE_COLORS[FLOOR_CODE];
+
+   drawObject(x,y,color);
+
+   y = y + game.offset.y;
+   x = x + game.offset.x;
+
+   game.context.drawImage(player.image, x*TILE_DIM, y*TILE_DIM, IMG_SZ, IMG_SZ);
 }
 function checkForWin() {
    if (game.enemies.length == 0 && 

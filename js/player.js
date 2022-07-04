@@ -15,7 +15,7 @@
  * @property {relics} relics - relics collected
  */
 class Player {
-   constructor(level, health, weapon, coords, xp, relics) {
+   constructor(level, health, weapon, coords, xp, relics, src) {
       this.level = level;
       this.health = health;
       this.weapon = weapon;
@@ -24,6 +24,19 @@ class Player {
          x:0,
          y:0
       };
+      /* for sprites*/
+      if (src) {
+
+         this.image = new Image();
+         this.image.src = src;
+         let {x, y} = coords;
+         let obj = this;
+         this.image.onload = function() {
+            console.log('draw!');
+            game.context.drawImage(obj.image, x*TILE_DIM, y*TILE_DIM,IMG_SZ, IMG_SZ);
+         };
+      }
+   
       this.relics = relics;
       this.xp = xp;
    }
