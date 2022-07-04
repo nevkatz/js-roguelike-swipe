@@ -2,6 +2,7 @@
  * Swipe Logic
  */
 function swipeStart(e) {
+     e.preventDefault();
   //  console.log(e);
      let obj = e.touches[0];
 
@@ -12,6 +13,7 @@ function swipeStart(e) {
 
 }
 function swipeMove(e) {
+        e.preventDefault();
 
         let obj = e.touches[0];
 
