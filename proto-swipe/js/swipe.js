@@ -10,7 +10,7 @@ function swipeStart(e) {
 
      game.touchCoords.x = clientX;
      game.touchCoords.y = clientY;
-
+     
 }
 function swipeMove(e) {
         e.preventDefault();

@@ -72,8 +72,10 @@ function swipeMove(e) {
             let {x, y} = player.velocity;
             checkPlayer(oldX, oldY, newX, newY, offset);
 
+            // interval should not be happening during a change in player motion.
+            // it should only happen when game is stopped.
             if (!game.timer) {
-              let delay = 100;
+              let delay = 200;
               game.timer = window.setInterval(function() {
                 coast();
               }, delay);

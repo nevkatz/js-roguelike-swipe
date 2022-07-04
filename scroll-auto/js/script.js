@@ -271,6 +271,12 @@ function drawMap(startX, startY, endX, endY) {
          let c_idx = game.map[row][col];
 
          color = TILE_COLORS[c_idx];
+
+
+         if (c_idx == PLAYER_CODE && game.timer) {
+            console.log('timer is on...');
+            color = 'dodgerblue';
+         }
         
          drawObject(col, row, color);
 
