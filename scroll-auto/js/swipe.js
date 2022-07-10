@@ -34,6 +34,7 @@ function setVelocityX(diff, clientX, clientY, newX, newY, min) {
     if (!player.edgeX(diff)) {
         newX = player.coords.x + player.velocity.x;
     }
+    // prevent buildup of small movements
     if (Math.abs(diff.y) < min && diff.y != 0) {
         diff.y = 0;
         game.touchCoords.y = clientY;
@@ -47,15 +48,12 @@ function setVelocityY(diff,clientX,clientY,newX, newY, min) {
     if (!player.edgeY(diff)) {
         newY = player.coords.y + player.velocity.y;
     }
+    // prevent buildup of small movements
     if (Math.abs(diff.x) < min && diff.x != 0) {
-
-
            diff.x = 0;
            game.touchCoords.x = clientX;
-       }
-    
-
-      return newY;
+    }
+    return newY;
 }
 function swipeMove(e) {
         e.preventDefault();
@@ -73,10 +71,8 @@ function swipeMove(e) {
            y:clientY - game.touchCoords.y
         };
         const threshold = 20;
-        const diag_threshold = 17;
+        const diag_threshold = 14;
         const min = 15;
-        console.log(`diff: ${diff.x},${diff.y}`);
-
 
         if (Math.abs(diff.x) > diag_threshold &&
             Math.abs(diff.y) > diag_threshold) {
@@ -114,6 +110,7 @@ function swipeMove(e) {
 
 function stopCoast() {
     console.log('stop coast.');
+
     window.clearInterval(game.timer);
     window.clearTimeout(game.timer);
     game.timer = null;
