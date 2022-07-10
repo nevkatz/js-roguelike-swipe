@@ -24,46 +24,32 @@ function swipeEnd(e) {
 
     game.timer = null;
 }
-function stopCoast() {
-    console.log('stopCoast');
-    window.clearInterval(game.timer);
-    window.clearTimeout(game.timer);
-    game.timer = null;
-    drawMap(0, 0, COLS, ROWS);
-}
 function setVelocityX(diff, clientX, clientY, newX, newY, min) {
-
-    const coop_threshold = 10;
     stopCoast();
+    const coop_threshold = 10;
+
     player.velocity.x = diff.x/Math.abs(diff.x);
     game.touchCoords.x = clientX;
             
     if (!player.edgeX(diff)) {
         newX = player.coords.x + player.velocity.x;
-     
-
     }
     if (Math.abs(diff.y) < min && diff.y != 0) {
-        console.log('reset y');
         diff.y = 0;
         game.touchCoords.y = clientY;
     }
-   
     return newX;
 }
 function setVelocityY(diff,clientX,clientY,newX, newY, min) {
+    stopCoast();
+    player.velocity.y = diff.y/Math.abs(diff.y);
+    game.touchCoords.y = clientY;
+    if (!player.edgeY(diff)) {
+        newY = player.coords.y + player.velocity.y;
+    }
+    if (Math.abs(diff.x) < min && diff.x != 0) {
 
-        
-        stopCoast();
-        player.velocity.y = diff.y/Math.abs(diff.y);
-        game.touchCoords.y = clientY;
-        if (!player.edgeY(diff)) {
-                newY = player.coords.y + player.velocity.y;
-  
-        }
-        if (Math.abs(diff.x) < min && diff.x != 0) {
 
-           console.log('reset x');
            diff.x = 0;
            game.touchCoords.x = clientX;
        }
@@ -101,13 +87,13 @@ function swipeMove(e) {
         }
         else if (Math.abs(diff.x) > threshold) {
             newX = setVelocityX(diff, clientX, clientY, newX, newY, min);
+            player.velocity.y = 0;
 
         }
         else if (Math.abs(diff.y) > threshold) {
             newY = setVelocityY(diff, clientX, clientY, newX, newY, min);
+            player.velocity.x = 0;
         }
-     
-
 
         if (newY != oldY || newX != oldX) {
             let {x, y} = player.velocity;
@@ -115,18 +101,25 @@ function swipeMove(e) {
             checkPlayer(oldX, oldY, newX, newY);
 
             if (!game.timer) {
-              let delay = 100;
+              let delay = 125;
               game.timer = window.setTimeout(function() {
-                coast();
+                startCoast();
               }, delay);
             }
         }
         else {
            let {x, y} = player.velocity;
         }
-
 }
-function coast() {
+
+function stopCoast() {
+    console.log('stop coast.');
+    window.clearInterval(game.timer);
+    window.clearTimeout(game.timer);
+    game.timer = null;
+    drawMap(0, 0, COLS, ROWS);
+}
+function startCoast() {
     let delay = 100;
     game.timer = window.setInterval(function() {
         inertia();

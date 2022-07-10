@@ -273,7 +273,7 @@ function drawMap(startX, startY, endX, endY) {
          color = TILE_COLORS[c_idx];
 
          if (c_idx == PLAYER_CODE) {
-           color = debug_player(color);
+           color = debugPlayer(color);
          }
         
          drawObject(col, row, color);
@@ -281,10 +281,15 @@ function drawMap(startX, startY, endX, endY) {
       } // end loop
    }
 }
-function debug_player(color) {
+function debugPlayer(color) {
    if (game.timer) {
-        console.log('timer is on...');
-            color = 'dodgerblue';
+        color = 'dodgerblue';
+        if (player.velocity.x != 0 && player.velocity.y != 0) {
+            color = 'lightgreen';
+        }
+        else {
+         color = 'dodgerblue';
+        }
    }
    else if (player.velocity.x != 0 && player.velocity.y != 0) {
             color = 'orange';
