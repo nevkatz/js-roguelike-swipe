@@ -25,9 +25,11 @@ function swipeEnd(e) {
     game.timer = null;
 }
 function stopCoast() {
+    console.log('stopCoast');
     window.clearInterval(game.timer);
     window.clearTimeout(game.timer);
     game.timer = null;
+    drawMap(0, 0, COLS, ROWS);
 }
 function setVelocityX(diff, clientX, clientY, newX, newY, min) {
 
@@ -51,7 +53,7 @@ function setVelocityX(diff, clientX, clientY, newX, newY, min) {
 }
 function setVelocityY(diff,clientX,clientY,newX, newY, min) {
 
-        console.log('move y');
+        
         stopCoast();
         player.velocity.y = diff.y/Math.abs(diff.y);
         game.touchCoords.y = clientY;
@@ -85,13 +87,13 @@ function swipeMove(e) {
            y:clientY - game.touchCoords.y
         };
         const threshold = 20;
-        const coop_threshold = 14
-        const min = 2;
+        const diag_threshold = 17;
+        const min = 15;
         console.log(`diff: ${diff.x},${diff.y}`);
 
 
-        if (Math.abs(diff.x) > coop_threshold &&
-            Math.abs(diff.y) > coop_threshold) {
+        if (Math.abs(diff.x) > diag_threshold &&
+            Math.abs(diff.y) > diag_threshold) {
             console.log('diagonal')
             newX = setVelocityX(diff, clientX, clientY, newX, newY, 0);
             newY = setVelocityY(diff, clientX, clientY, newX, newY, 0);
@@ -99,6 +101,7 @@ function swipeMove(e) {
         }
         else if (Math.abs(diff.x) > threshold) {
             newX = setVelocityX(diff, clientX, clientY, newX, newY, min);
+
         }
         else if (Math.abs(diff.y) > threshold) {
             newY = setVelocityY(diff, clientX, clientY, newX, newY, min);
@@ -112,7 +115,7 @@ function swipeMove(e) {
             checkPlayer(oldX, oldY, newX, newY);
 
             if (!game.timer) {
-              let delay = 50;
+              let delay = 100;
               game.timer = window.setTimeout(function() {
                 coast();
               }, delay);
@@ -130,7 +133,10 @@ function coast() {
     }, delay);         
 }
 function inertia() {
+
     let {x, y} = player.velocity;
+
+    console.log(`inertia (${x},${y})`);
 
     let {x:oldX, y:oldY} = player.coords;
 
@@ -161,8 +167,10 @@ function checkPlayer(oldX, oldY, newX, newY) {
         }
         else if (game.map[newY][newX] == ENEMY_CODE) {
             checkEnemy(newX, newY);   
+            stopCoast();
         }
         else {
             console.log('nothing to do.');
+            stopCoast();
         }
 }

@@ -272,19 +272,30 @@ function drawMap(startX, startY, endX, endY) {
 
          color = TILE_COLORS[c_idx];
 
-
-         if (c_idx == PLAYER_CODE && game.timer) {
-            console.log('timer is on...');
-            color = 'dodgerblue';
-         }
-         else if (c_idx == PLAYER_CODE && player && player.velocity.x != 0 && player.velocity.y != 0) {
-            color = 'orange';
+         if (c_idx == PLAYER_CODE) {
+           color = debug_player(color);
          }
         
          drawObject(col, row, color);
 
       } // end loop
    }
+}
+function debug_player(color) {
+   if (game.timer) {
+        console.log('timer is on...');
+            color = 'dodgerblue';
+   }
+   else if (player.velocity.x != 0 && player.velocity.y != 0) {
+            color = 'orange';
+   }
+   else if (player.velocity.y != 0) {
+            color = 'red';
+   }
+   else if (player.velocity.x != 0) {
+            color = 'purple';
+   }
+   return color;
 }
 
 /**
@@ -442,7 +453,7 @@ function checkOffset(x, y) {
          const lowerBounds = (HEIGHT + CENTER_BOX.y) / 2;
          
          if (absPos.y >= lowerBounds) {
-           offet.y = -1;
+           offset.y = -1;
          }
    }
    game.offset.y += offset.y;
