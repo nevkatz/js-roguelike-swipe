@@ -111,8 +111,6 @@ function drawMap(startX, startY, endX, endY) {
 
             let c_idx = game.map[row][col];
 
-            let color = TILE_COLORS[c_idx];
-
             
             drawObject(col, row, color);
 

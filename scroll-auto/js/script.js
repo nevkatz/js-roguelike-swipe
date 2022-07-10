@@ -277,6 +277,9 @@ function drawMap(startX, startY, endX, endY) {
             console.log('timer is on...');
             color = 'dodgerblue';
          }
+         else if (c_idx == PLAYER_CODE && player && player.velocity.x != 0 && player.velocity.y != 0) {
+            color = 'orange';
+         }
         
          drawObject(col, row, color);
 
@@ -397,42 +400,54 @@ function updatePlayerPosition(oldX, oldY, newX, newY) {
 // key down events
 
 
-function checkOffset(direction, x, y, offset) {
+function checkOffset(x, y) {
 
    let absPos = {
         x: x + game.offset.x,
         y: y + game.offset.y
    };
+   let offset = {
+      x:0,
+      y:0
+   };
    
-   switch (direction) {
-      case 'left':
+   // left
+   if (x < player.coords.x) {
+      
       const leftBounds = (WIDTH - CENTER_BOX.x) / 2;
 
       if (absPos.x <= leftBounds) {
          offset.x = 1;
       }
-      break;
 
-      case 'up':
-      const upperBounds = (HEIGHT - CENTER_BOX.y) / 2;
-            if (absPos.y <= upperBounds) {
-                offset.y = 1;
-            }
-      break;
-
-      case 'right':
-      const rightBounds = (WIDTH + CENTER_BOX.x) / 2;
-      if (absPos.x >= rightBounds) {
-                offset.x = -1;
-      }
-      break;
-      case 'down':
-      const lowerBounds = (HEIGHT + CENTER_BOX.y) / 2;
-            if (absPos.y >= lowerBounds) {
-                offset.y = -1;
-      }
-      break;
    }
+   // right
+   else if (x > player.coords.x) {
+      const rightBounds = (WIDTH + CENTER_BOX.x) / 2;
+
+      if (absPos.x >= rightBounds) {
+          offset.x = -1;
+      }
+   }
+   // up
+   if (y < player.coords.y) {
+      const upperBounds = (HEIGHT - CENTER_BOX.y) / 2;
+
+      if (absPos.y <= upperBounds) {
+          offset.y = 1;
+      }
+   }
+   // down
+   else if (y > player.coords.y) {
+         const lowerBounds = (HEIGHT + CENTER_BOX.y) / 2;
+         
+         if (absPos.y >= lowerBounds) {
+           offet.y = -1;
+         }
+   }
+   game.offset.y += offset.y;
+   game.offset.x += offset.x;
+
    return offset;
 }
 function checkDirection(e) {
@@ -448,34 +463,31 @@ function checkDirection(e) {
     switch (e.which) {
         case 37: // left
             x--;
-            offset = checkOffset('left', x, y, offset);
             break;
         case 38: // up
             y--;
-            offset = checkOffset('up',x,y, offset);
             break;
         case 39: // right
             x++;
-            offset = checkOffset('right',x,y, offset);
             break;
         case 40: // down
             y++;
-            offset = checkOffset('down',x,y, offset);
             break;
         default:
             return; // exit this handler for other keys
     }
+
     if (game.map[y][x] == ENEMY_CODE) {
 
         checkEnemy(x, y);
 
     } else if (game.map[y][x] != WALL_CODE) {
-        movePlayer(x, y, offset);
+        movePlayer(x, y);
     }
 }
-function movePlayer(x, y, offset) {
-      game.offset.y += offset.y;
-      game.offset.x += offset.x;
+function movePlayer(x, y) {
+   let offset = checkOffset(x, y);
+      
 
     // if next spot is potion
     if (game.map[y][x] == POTION_CODE) {

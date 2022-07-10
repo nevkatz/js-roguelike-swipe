@@ -118,12 +118,6 @@ function startGame() {
     drawMap(0, 0, COLS, ROWS);
 }
 
-function placeItem(coords, tileCode) {
-
-    addObjToMap(coords, tileCode);
-    let color = TILE_COLORS[tileCode];
-    drawObject(coords.x, coords.y, color);
-}
 
 /**
  *
@@ -186,29 +180,7 @@ function pickRandom(arr) {
 function addObjToMap(coords, tileCode) {
     game.map[coords.y][coords.x] = tileCode;
 }
-function checkForWin() {
 
-    if (game.enemies.length == 0 &&
-        game.itemsLeft(RELIC_CODE) == 0) {
-        userWins();
-    }
-}
-function userWins() {
-    alert("YOU CONQUERED THE DUNGEON!");
-    game.reset();
-    startGame();
-};
-
-function gameOver() {
-    alert("GAME OVER");
-    game.reset();
-    startGame();
-};
-
-function removeObjFromMap(x, y) {
-    // make this a floor coordinate
-    game.map[y][x] = FLOOR_CODE;
-};
 function generatePlayer() {
 
     let coords = {
