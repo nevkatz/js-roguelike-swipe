@@ -422,6 +422,7 @@ function checkOffset(x, y) {
         x: x + game.offset.x,
         y: y + game.offset.y
    };
+   
    let offset = {
       x:0,
       y:0

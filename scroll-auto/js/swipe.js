@@ -58,6 +58,10 @@ function setVelocityY(diff,clientX,clientY,newX, newY, min) {
 function swipeMove(e) {
         e.preventDefault();
 
+        if (e.touches.length > 1) {
+            alert('number of touches: ' + e.touches.length);
+        }
+
         let obj = e.touches[0];
 
         let {x:oldX, y:oldY} = player.coords;

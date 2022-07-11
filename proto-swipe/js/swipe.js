@@ -3,7 +3,7 @@
  */
 function swipeStart(e) {
      e.preventDefault();
-  //  console.log(e);
+
      let obj = e.touches[0];
 
      let {clientX,clientY} = obj;

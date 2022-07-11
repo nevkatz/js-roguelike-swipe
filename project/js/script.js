@@ -109,8 +109,9 @@ function drawMap(startX, startY, endX, endY) {
 
         for (var col = startX; col < endX; col++) {
 
-            let c_idx = game.map[row][col];
+            const c_idx = game.map[row][col];
 
+            const color = TILE_COLORS[c_idx];
             
             drawObject(col, row, color);
 
