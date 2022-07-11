@@ -5,12 +5,10 @@ function swipeStart(e) {
      e.preventDefault();
 
      let obj = e.touches[0];
-
      let {clientX,clientY} = obj;
 
      game.touchCoords.x = clientX;
-     game.touchCoords.y = clientY;
-     
+     game.touchCoords.y = clientY; 
 }
 function swipeMove(e) {
         e.preventDefault();
@@ -47,7 +45,6 @@ function swipeMove(e) {
             }
 
         }
-    
         if (game.map[newY][newX] != WALL_CODE) {
            updatePlayerPosition(oldX, oldY, newX, newY);
         }

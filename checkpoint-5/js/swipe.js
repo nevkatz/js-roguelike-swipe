@@ -23,15 +23,15 @@ function swipeEnd(e) {
         x: 0,
         y: 0
     };
-    window.clearInterval(game.timer);
-    window.clearTimeout(game.timer);
-
-    game.timer = null;
 }
 
-function setVelocityX(diff, clientX, clientY, newX, newY, min) {
-    stopCoast();
-    const coop_threshold = 10;
+function setVelocityX(diff, clientX, clientY, newX, newY) {
+
+
+    /**
+     * @TODO: call stopCoast()
+     */
+
 
     player.velocity.x = diff.x / Math.abs(diff.x);
     game.touchCoords.x = clientX;
@@ -39,26 +39,21 @@ function setVelocityX(diff, clientX, clientY, newX, newY, min) {
     if (!player.edgeX(diff)) {
         newX = player.coords.x + player.velocity.x;
     }
-    // prevent buildup of small movements
-    if (Math.abs(diff.y) < min && diff.y != 0) {
-        diff.y = 0;
-        game.touchCoords.y = clientY;
-    }
+
     return newX;
 }
 
-function setVelocityY(diff, clientX, clientY, newX, newY, min) {
-    stopCoast();
+function setVelocityY(diff, clientX, clientY, newX, newY) {
+
+    /**
+     * @TODO: call stopCoast()
+     */
     player.velocity.y = diff.y / Math.abs(diff.y);
     game.touchCoords.y = clientY;
     if (!player.edgeY(diff)) {
         newY = player.coords.y + player.velocity.y;
     }
-    // prevent buildup of small movements
-    if (Math.abs(diff.x) < min && diff.x != 0) {
-        diff.x = 0;
-        game.touchCoords.x = clientX;
-    }
+
     return newY;
 }
 
@@ -91,20 +86,18 @@ function swipeMove(e) {
         };
         const threshold = 20;
         const diag_threshold = 14;
-        const min = 15;
 
         if (Math.abs(diff.x) > diag_threshold &&
             Math.abs(diff.y) > diag_threshold) {
-            console.log('diagonal')
             newX = setVelocityX(diff, clientX, clientY, newX, newY, 0);
             newY = setVelocityY(diff, clientX, clientY, newX, newY, 0);
 
         } else if (Math.abs(diff.x) > threshold) {
-            newX = setVelocityX(diff, clientX, clientY, newX, newY, min);
+            newX = setVelocityX(diff, clientX, clientY, newX, newY);
             player.velocity.y = 0;
 
         } else if (Math.abs(diff.y) > threshold) {
-            newY = setVelocityY(diff, clientX, clientY, newX, newY, min);
+            newY = setVelocityY(diff, clientX, clientY, newX, newY);
             player.velocity.x = 0;
         }
 
@@ -113,20 +106,7 @@ function swipeMove(e) {
                 x,
                 y
             } = player.velocity;
-            console.log(`velocity ${x},${y}`);
             checkPlayer(oldX, oldY, newX, newY);
-
-            if (!game.timer) {
-                let delay = 125;
-                game.timer = window.setTimeout(function() {
-                    startCoast();
-                }, delay);
-            }
-        } else {
-            let {
-                x,
-                y
-            } = player.velocity;
         }
 
     }
@@ -135,47 +115,16 @@ function swipeMove(e) {
 }
 
 function stopCoast() {
-    console.log('stop coast.');
-
-    window.clearInterval(game.timer);
-    window.clearTimeout(game.timer);
-    game.timer = null;
-    drawMap(0, 0, COLS, ROWS);
+    // code for stopping coast behvior
 }
 
 function startCoast() {
-    let delay = 100;
-    game.timer = window.setInterval(function() {
-        inertia();
-    }, delay);
+    // code for starting coast behavior
 }
 
-function inertia() {
+function coastPlayer() {
 
-    let {
-        x,
-        y
-    } = player.velocity;
-
-    console.log(`inertia (${x},${y})`);
-
-    let {
-        x: oldX,
-        y: oldY
-    } = player.coords;
-
-    let {
-        x: newX,
-        y: newY
-    } = player.coords;
-
-    if (x && !player.edgeX(x)) {
-        newX = player.coords.x + x;
-    }
-    if (y && !player.edgeY(y)) {
-        newY = player.coords.y + y;
-    }
-    checkPlayer(oldX, oldY, newX, newY);
+    // add code for coasting
 }
 
 function checkPlayer(oldX, oldY, newX, newY) {
@@ -190,6 +139,8 @@ function checkPlayer(oldX, oldY, newX, newY) {
         movePlayer(newX, oldY);
     } else {
         console.log('nothing to do.');
-        stopCoast();
+        /**
+         *  @TODO: Call stopCoast()
+         */ 
     }
 }

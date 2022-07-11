@@ -17,7 +17,6 @@ const FLOOR_CODE = 1;
 const PLAYER_CODE = 2;
 
 // the visible area
-
 const VISIBILITY = 3;
 
 const TILE_COLORS = [
@@ -38,42 +37,17 @@ const TILE_COLORS = [
  * Creates a new player. 
  * @class
  * 
+ * @property {number} level - starts at one and progresses
+ * @property {number} health - keep this above zero
+ * @property {string} weapon - ties to an object with a damage rating
  * @property {object} coords - location on the grid
+ * @property {number} xp - experience points
+ * @property {relics} relics - relics collected
  */
 class Player {
     constructor(coords) {
         this.coords = coords;
     }
-}
-Player.prototype.edgeY = function(diff) {
-
-        let topBounds = 0;
-        let bottomBounds = ROWS;
-        let atTop = diff.y < 0 && this.coords.y <= topBounds;
-        let atBot = diff.y > 0 && this.coords.y >= bottomBounds;
-
-        if (atTop) {
-            console.log('at top...');
-            this.coords.y = topBounds;
-        } else if (atBot) {
-            this.coords.y = bottomBounds;
-        }
-
-        return atTop || atBot;
-};
-Player.prototype.edgeX = function(diff) {
-
-        let rightBounds = COLS;
-        let leftBounds = 0;
-        let atRight = diff.x > 0 && this.coords.x + TILE_DIM / 2 >= game.canvas.width;
-        let atLeft = diff.x < 0 && this.coords.x - TILE_DIM / 2 <= 0;
-
-        if (atRight) {
-            player.coords.x = rightBounds;
-        } else if (atLeft) {
-            player.coords.x = leftBounds;
-        }
-        return atRight || atLeft;
 }
 
 
@@ -86,6 +60,7 @@ function createDOM() {
     canvas.id = 'grid';
     canvas.height = ROWS * TILE_DIM;
     canvas.width = COLS * TILE_DIM;
+
     container.appendChild(canvas);
 }
 /**
@@ -101,8 +76,6 @@ function init() {
     game.context = game.canvas.getContext("2d");
     startGame();
     document.addEventListener('keydown', checkDirection);
-    game.canvas.addEventListener('touchstart', swipeStart);
-    game.canvas.addEventListener('touchmove', swipeMove);
 }
 init();
 /**
@@ -114,6 +87,12 @@ function startGame() {
     drawMap(0, 0, COLS, ROWS);
 }
 
+function placeItem(coords, tileCode) {
+
+    addObjToMap(coords, tileCode);
+    let color = TILE_COLORS[tileCode];
+    drawObject(coords.x, coords.y, color);
+}
 
 /**
  *
@@ -130,9 +109,9 @@ function drawMap(startX, startY, endX, endY) {
 
         for (var col = startX; col < endX; col++) {
 
-            let c_idx = game.map[row][col];
+            const c_idx = game.map[row][col];
 
-            let color = TILE_COLORS[c_idx];
+            const color = TILE_COLORS[c_idx];
             
             drawObject(col, row, color);
 
@@ -176,7 +155,29 @@ function pickRandom(arr) {
 function addObjToMap(coords, tileCode) {
     game.map[coords.y][coords.x] = tileCode;
 }
+function checkForWin() {
 
+    if (game.enemies.length == 0 &&
+        game.itemsLeft(RELIC_CODE) == 0) {
+        userWins();
+    }
+}
+function userWins() {
+    alert("YOU CONQUERED THE DUNGEON!");
+    game.reset();
+    startGame();
+};
+
+function gameOver() {
+    alert("GAME OVER");
+    game.reset();
+    startGame();
+};
+
+function removeObjFromMap(x, y) {
+    // make this a floor coordinate
+    game.map[y][x] = FLOOR_CODE;
+};
 function generatePlayer() {
 
     let coords = {
@@ -207,10 +208,7 @@ function updatePlayerPosition(oldX, oldY, newX, newY) {
         y: newY
     };
 }
-function removeObjFromMap(x, y) {
-   // make this a floor coordinate
-   game.map[y][x] = FLOOR_CODE;
-};
+
 function checkDirection(e) {
 
     let {x, y} = player.coords;
