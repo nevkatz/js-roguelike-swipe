@@ -3,7 +3,7 @@
  */
 function swipeStart(e) {
 
-    if (e.touches.length == 1) {
+     if (e.touches.length == 1) {
 
         e.preventDefault();
 
@@ -13,8 +13,9 @@ function swipeStart(e) {
 
         game.touchCoords.x = clientX;
         game.touchCoords.y = clientY;
-
     }
+
+
 }
 function swipeEnd(e) {
     e.preventDefault();
@@ -79,6 +80,7 @@ function swipeMove(e) {
             // add code for starting to coast
         }
     }
+    
 }
 function checkPlayer(oldX, oldY, newX, newY) {
     const freeTile = (x, y) => game.map[y][x] != WALL_CODE;
