@@ -2,9 +2,11 @@
  * Swipe Logic
  */
 function swipeStart(e) {
-    e.preventDefault();
 
     if (e.touches.length == 1) {
+
+        e.preventDefault();
+
         let obj = e.touches[0];
 
         let {clientX, clientY} = obj;
@@ -61,9 +63,12 @@ function setVelocityY(diff, clientX, clientY, newX, newY, min) {
 }
 
 function swipeMove(e) {
-    e.preventDefault();
+   
 
     if (e.touches.length == 1) {
+
+        e.preventDefault();
+        
         let obj = e.touches[0];
 
         let {
