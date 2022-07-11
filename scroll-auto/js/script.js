@@ -272,9 +272,9 @@ function drawMap(startX, startY, endX, endY) {
 
          color = TILE_COLORS[c_idx];
 
-         if (c_idx == PLAYER_CODE) {
+        /* if (c_idx == PLAYER_CODE) {
            color = debugPlayer(color);
-         }
+         }*/
         
          drawObject(col, row, color);
 
@@ -422,7 +422,7 @@ function checkOffset(x, y) {
         x: x + game.offset.x,
         y: y + game.offset.y
    };
-   
+
    let offset = {
       x:0,
       y:0
