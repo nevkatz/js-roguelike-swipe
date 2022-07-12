@@ -22,7 +22,6 @@ Player.prototype.edgeY = function(diff) {
         let atBot = diff.y > 0 && this.coords.y >= bottomBounds;
 
         if (atTop) {
-            console.log('at top...');
             this.coords.y = topBounds;
         } else if (atBot) {
             this.coords.y = bottomBounds;
