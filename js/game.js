@@ -11,14 +11,6 @@
 
 class Game {
    constructor() {
-      this.rooms = [];
-      this.curRoomId = 0;
-
-      this.enemies = [];
-      this.relics = 0;
-
-      this.isShadowToggled = false;
-      this.shadow = [];
 
       this.map = [];
       this.canvas = null;
@@ -29,10 +21,19 @@ class Game {
          y:0
       }
 
+      // for the game
+      this.rooms = [];
+      this.curRoomId = 0;
+      this.enemies = [];
+      this.relics = 0;
       this.offset = {
          x:0,
          y:0
       }
+
+      
+
+     
    }
 }
 /**
