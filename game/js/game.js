@@ -20,6 +20,20 @@ class Game {
          x:0,
          y:0
       }
+
+      // for the game
+      this.rooms = [];
+      this.curRoomId = 0;
+      this.enemies = [];
+      this.relics = 0;
+      this.offset = {
+         x:0,
+         y:0
+      }
+
+      
+
+     
    }
 }
 /**
@@ -27,7 +41,15 @@ class Game {
  * 
  */
 Game.prototype.reset = function() {
+   this.enemies = [];
+   this.shadow = [];
    this.map = [];
+   this.rooms = []
+   this.relics = 0;
+   this.offset = {
+      x:0,
+      y:0
+   }
 }
 
 Game.prototype.inRoom = function({x,y}) {
