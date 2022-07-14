@@ -15,6 +15,7 @@ class Game {
       this.map = [];
       this.canvas = null;
       this.context = null;
+      this.timer = null;
 
       this.touchCoords = {
          x:0,

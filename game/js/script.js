@@ -128,7 +128,7 @@ function createDOM() {
 
    // add canvas
    let canvas = document.createElement('canvas');
-   canvas.className = 'full-width';
+  // canvas.className = 'full-width';
    canvas.id = 'grid';
 
    canvas.height = HEIGHT * TILE_DIM;

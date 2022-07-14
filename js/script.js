@@ -60,6 +60,7 @@ function init() {
     game.context = game.canvas.getContext("2d");
     startGame();
     document.addEventListener('keydown', checkDirection);
+    game.canvas.addEventListener('touchend', swipeEnd);
     game.canvas.addEventListener('touchstart', swipeStart);
     game.canvas.addEventListener('touchmove', swipeMove);
 }
@@ -143,9 +144,7 @@ function generatePlayer() {
         x: COLS / 2,
         y: ROWS / 2
     };
-    console.log('coords: ' + coords);
 
-    // level, health, weapon, coords, xp
     player = new Player(coords);
 
     addObjToMap(player.coords, PLAYER_CODE);

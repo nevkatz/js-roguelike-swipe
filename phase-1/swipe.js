@@ -1,28 +1,22 @@
 /**
  * Swipe Logic
  */
-function swipeStart(e) {
+function swipeStart(event) {
 
-     if (e.touches.length == 1) {
+     if (event.touches.length == 1) {
 
-        e.preventDefault();
+        event.preventDefault();
 
-        let obj = e.touches[0];
+        let obj = event.touches[0];
 
         let {clientX, clientY} = obj;
 
         game.touchCoords.x = clientX;
         game.touchCoords.y = clientY;
     }
-
-
 }
 function swipeEnd(e) {
-    e.preventDefault();
-    player.velocity = {
-        x: 0,
-        y: 0
-    };
+  
 }
 function setVelocityX(diff, clientX, clientY, newX, newY) {
 
@@ -39,23 +33,20 @@ function setVelocityY(diff, clientX, clientY, newX, newY) {
 
     player.velocity.y = diff.y / Math.abs(diff.y);
     game.touchCoords.y = clientY;
+
     if (!player.edgeY(diff)) {
         newY = player.coords.y + player.velocity.y;
     }
 
     return newY;
 }
-function swipeMove(e) {
+function swipeMove(event) {
 
-    if (e.touches.length == 1) {
+    if (event.touches.length == 1) {
 
-        e.preventDefault();
+        event.preventDefault();
         
-        let obj = e.touches[0];
-
-        let { x: oldX,y: oldY} = player.coords;
-
-        let {x: newX,y: newY} = player.coords;
+        let obj = event.touches[0];
 
         let {clientX,clientY} = obj;
 
@@ -63,6 +54,11 @@ function swipeMove(e) {
             x: clientX - game.touchCoords.x,
             y: clientY - game.touchCoords.y
         };
+
+        const {x: oldX,y: oldY} = player.coords;
+
+        let {x: newX,y: newY} = player.coords;
+
         const threshold = 20;
 
         if (Math.abs(diff.x) > threshold) {
@@ -72,12 +68,8 @@ function swipeMove(e) {
         if (Math.abs(diff.y) > threshold) {
             newY = setVelocityY(diff, clientX, clientY, newX, newY);
         }
-
         if (newY != oldY || newX != oldX) {
-            let {x,y} = player.velocity;
             checkPlayer(oldX, oldY, newX, newY);
-
-            // add code for starting to coast
         }
     }
     
