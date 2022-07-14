@@ -102,7 +102,10 @@ function swipeMove(event) {
 
             if (!game.timer) {
                 let delay = 125;
-                game.timer = window.setTimeout(startCoast, delay);
+                game.timer = window.setTimeout(function() {
+                    window.requestAnimationFrame(coastPlayer);
+                }, delay);
+          
             }
         } 
 
@@ -113,16 +116,11 @@ function swipeMove(event) {
 
 function stopCoast() {
 
-    window.clearInterval(game.timer);
     window.clearTimeout(game.timer);
     game.timer = null;
     drawMap(0, 0, COLS, ROWS);
 }
 
-function startCoast() {
-    let delay = 100;
-    game.timer = window.setInterval(coastPlayer, delay);
-}
 
 function coastPlayer() {
 
@@ -138,7 +136,15 @@ function coastPlayer() {
     if (y) {
         newY = player.coords.y + y;
     }
+
     checkPlayer(oldX, oldY, newX, newY);
+
+    if (game.timer) {
+        let delay = 100;
+        game.timer = window.setTimeout(function() {
+            window.requestAnimationFrame(coastPlayer);
+        }, delay);
+    }
 }
 
 function checkPlayer(oldX, oldY, newX, newY) {
@@ -152,7 +158,6 @@ function checkPlayer(oldX, oldY, newX, newY) {
     } else if (newX != oldX && freeTile(newX, oldY)) {
         movePlayer(newX, oldY);
     } else {
-        console.log('nothing to do.');
         stopCoast();
     }
 }

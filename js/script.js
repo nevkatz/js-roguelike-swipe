@@ -204,10 +204,10 @@ function movePlayer(x,y) {
 
     updatePlayerPosition(oldX, oldY, x, y);
 
-     let left = oldX - 1;
-     let top = oldY - 1;
-     let right = x + 2;
-     let bot = y + 2;
+    let left = oldX - 1;
+    let top = oldY - 1;
+    let right = x + 2;
+    let bot = y + 2;
 
     drawMap(left, top, right, bot);
 }
