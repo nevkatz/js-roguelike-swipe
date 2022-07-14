@@ -113,21 +113,16 @@ function swipeMove(e) {
                 x,
                 y
             } = player.velocity;
-            console.log(`velocity ${x},${y}`);
             checkPlayer(oldX, oldY, newX, newY);
 
             if (!game.timer) {
                 let delay = 125;
                 game.timer = window.setTimeout(function() {
-                    startCoast();
+                    window.requestAnimationFrame(coastPlayer);
                 }, delay);
+          
             }
-        } else {
-            let {
-                x,
-                y
-            } = player.velocity;
-        }
+        } 
 
     }
 
@@ -143,39 +138,29 @@ function stopCoast() {
     drawMap(0, 0, COLS, ROWS);
 }
 
-function startCoast() {
-    let delay = 100;
-    game.timer = window.setInterval(function() {
-        coastPlayer();
-    }, delay);
-}
-
 function coastPlayer() {
 
-    let {
-        x,
-        y
-    } = player.velocity;
+    let {x,y} = player.velocity;
 
-    console.log(`coastPlayer (${x},${y})`);
+    const { x: oldX, y: oldY} = player.coords;
 
-    let {
-        x: oldX,
-        y: oldY
-    } = player.coords;
+    let {x: newX,y: newY} = player.coords;
 
-    let {
-        x: newX,
-        y: newY
-    } = player.coords;
-
-    if (x && !player.edgeX(x)) {
+    if (x) {
         newX = player.coords.x + x;
     }
-    if (y && !player.edgeY(y)) {
+    if (y) {
         newY = player.coords.y + y;
     }
+
     checkPlayer(oldX, oldY, newX, newY);
+
+    if (game.timer) {
+        let delay = 100;
+        game.timer = window.setTimeout(function() {
+            window.requestAnimationFrame(coastPlayer);
+        }, delay);
+    }
 }
 
 function checkPlayer(oldX, oldY, newX, newY) {

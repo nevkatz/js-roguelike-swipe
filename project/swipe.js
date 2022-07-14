@@ -20,10 +20,6 @@ function checkPlayer(oldX, oldY, newX, newY) {
 function stopCoast() {
 
 }
-function startCoast() {
-   
-}
-
 function coastPlayer() {
 
 }
