@@ -6,11 +6,11 @@
      line-height: 1.42857143;
      padding:  0px 0px;
      margin-top:  0px;
-
+     color:  white;
      background-color:  black;
 }
-body, a {
-    color:  white;
+body a {
+    color:  lightblue;
 }
 label {
      font-weight: bold;
